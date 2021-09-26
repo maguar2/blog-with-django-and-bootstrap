@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title_tag }}{% endblock %}
+
+{% block content %}
+    <!--Note that in post.author.xx, post is the model, author is linked to the user,
+    xx is another field in a model linked to the user, could also be another model -->
+    
+    <h1>{{ post.title }}</h1>
+    {% if post.author.profile.profile_pic %}
+      <small>By: <img src="{{ post.author.profile.profile_pic.url }}" class="rounded-circle" alt="missing img" width=15 height=15>
+    {% endif %}
+        {{ post.author.first_name }} {{ post.author.last_name }} - {{ post.post_date }}
+    current user: {{ user.id }}<br/>
+    <hr/>
+
+    <br/>
+    {% if user.is_authenticated %}
+      {% if user.id == post.author.id %}
+        <a href="{% url 'update_post' post.pk %}">|Edit Post|</a> 
+        <a href="{% url 'delete_post' post.pk %}">|Delete Post|</a></small> <br/>
+        <hr/>
+        <br/>
+      {% endif %}
+    {% endif  %}
+    <br/>
+
+    <!--Let's make sure our page doesn't break if there are no images-->
+    {% if post.header_image %}
+      <div class="container">
+        <img src="{{ post.header_image.url }}" class="img-fluid" height=200 width=200 />
+      </div>
+    {% endif %}
+    <br/><br/><!--Here, we want to look up only the url of the image and not the image itself, then wrp it in an 
+      image tag to output it as an image-->
+    
+    {{ post.body|safe }} 
+
+    <br/><hr/>   
+
+    <form action="{% url 'like_post' post.pk %}" method="POST">
+      {% csrf_token %}
+      {% if user.is_authenticated %}
+        {% if liked %}
+          <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-danger btn-sm">
+            unlike
+          </button> 
+        {% else %}
+          <button type="submit", name="post_id", value="{{ post.id }}", class="btn btn-primary btn-sm">
+            Like
+          </button>
+        {% endif %}
+        
+        - {{ total_likes }} Like(s)
+      {% else %}
+        <strong>You need to <a href="{% url 'login' %}">Login</a> to Like or comment on this post</strong>
+      {% endif %}
+    </form>
+    
+    <br/>
+  
+    <div class="card mb-3">
+      <div class="row g-0">
+        <div class="col-md-2">
+          {% if post.author.profile.profile_pic %}
+            <img src="{{ post.author.profile.profile_pic.url }}" class="img-fluid rounded-start" alt="writer image">
+          {% else %}
+            <img src="{% static 'default_img/default.png' %}" class="img-fluid rounded-start" alt="writer image">
+          {% endif %}
+         </div>
+        <div class="col-md-10">
+          <div class="card-body">
+            <h5 class="card-title">
+              {{ post.author.first_name }} 
+              {{ post.author.last_name }}
+            </h5>
+            <p class="small text-muted">
+
+              <a href="{% url 'show_profile_page' post.author.profile.id %}">Profile Page</a> 
+
+              {% if post.author.profile.website_url %}
+                | <a href="{{ post.author.profile.website_url }}">Website</a> 
+              {% endif %}
+              {% if post.author.profile.facebook_url %}  
+                | <a href="{{ post.author.profile.facebook_url }}">Facebook</a> 
+              {% endif %}
+              {% if post.author.profile.twitter_url %}
+                | <a href="{{ post.author.profile.twitter_url }}">Twitter</a>  
+              {% endif %}
+              {% if post.author.profile.instagram_url %}
+                | <a href="{{ post.author.profile.instagram_url }}">Instagram</a> 
+              {% endif %}
+              {% if post.author.profile.pinterest_url %}
+                | <a href="{{ post.author.profile.pinterest_url }}">Pinterest</a>
+              {% endif %}
+            </p>
+            <p class="card-text">{{ post.author.profile.bio }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr/>
+    <h2>Comments...</h2>
+    <br/>
+    {% if not post.comments.all %}<!--"comments is the related name declared in our model"-->
+      No comments Yet...<a href="{% url 'add_comment' post.pk %}">Add a comment</a>
+    {% else %}
+      <a href="{% url 'add_comment' post.pk %}">Add a comment</a>
+      <br/>
+      {% for comment in post.comments.all %}
+        <strong>
+          {{ comment.name }} -
+          {{ comment.date_added }}
+        </strong>
+        <br/>
+        {{ comment.body }}
+        <br/><br/>
+      {% endfor %}
+    {% endif %}
+
+    <hr/>
+
+
+{% endblock %}

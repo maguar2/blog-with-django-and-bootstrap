@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Delete blog Post{% endblock %}
+{% block content %}
+
+
+<h1>Delete Post....</h1>
+<br/><br/>
+<h3>Delete: {{ post.title }}?</h3>
+
+<br/>
+{% if user.is_authenticated %}
+    {% if user.id == post.author.id %}
+        <div class="form-group">
+            <form method="POST">
+                {% csrf_token %}
+                <strong>Are you sure?</strong><br/>
+                <button class="btn btn-secondary">Delete Post!</button> <button class="btn btn-secondary"><a href="{% url 'home' %}">Return Home</a></button>
+            </form>
+            <br/><br/>
+        </div>
+    {% else %}
+      <strong>Restricted page, kindly login to continue.</strong>
+    {% endif %}
+{% else %}
+
+<strong>Restricted page, kindly login to continue.</strong>
+
+{% endif %}
+{% endblock %}

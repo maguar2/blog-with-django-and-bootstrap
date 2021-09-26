@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Create a new blog Post{% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1>Add Post....</h1>
+    <br/><br/>
+    <div class="form-group">
+        <form method="POST" enctype="multipart/form-data"><!--The enctype is to make our forms recognize image encryption after installing Pillow, then headovet to your form for this page and make some changes-->
+            {% csrf_token %}
+            {{ form.media }}<!--This is for displaying with the ckeditor meant for styling-->
+            {{ form.as_p }}
+            <button class="btn btn-secondary">Post</button>
+        </form>
+    </div>
+
+    <script>
+        var name = "{{ user.id }}";
+        document.getElementById("writer").value = name;
+    </script>
+    <!--The javaScript code above is used to get the user id and make sure it is the same with the writer's id, so 
+    that if it matches, he can be able to modify a post that is his originally.
+    There's another way to do it directly with django, but it's longer and u can take a look at creqte_user_profile_page.html in 
+    the members section where exactly this was implemented with a CBV-->
+{% else %}
+<strong>Kindly Login to continue</strong>
+{% endif %}
+
+
+{% endblock %}

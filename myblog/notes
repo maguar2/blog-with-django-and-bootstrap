@@ -1,0 +1,17 @@
+add the 'def get_context_data' to any of your views to have that category list drop down menu.
+
+django-ckeditor is used for styling our blog writeup, u install it with 
+'pip install django-ckeditor', inorder to use it, u need to add it to SETTINGS, then u make 
+changes to the template for adding post in the form, instead of {{ form.as_p }}, use 
+{{ form.media }}, then it will be displayed as a full blown text editor on your site.
+
+'pip install Pillow', pillow is an image library that let's you work with pictures on django
+we need to make our forms on our template that makes the blog post to accept images using 
+' enctype="multipart/form-data" '. Since we will be uploading, we will go to our SETTINGSfile
+and add MEDIA_URL = '/media/'. This is the default folder for django uploads of static files
+You also need to specify the MEDIA_ROOT, go to SETTINGSfile and see. Also setup STATICFILE_DIRS
+after this, go to the original urls.py file and make some changes(import settings and static)
+
+When extending the functionality of our user profile to include profile pics and other features 
+not included by default django user model, we create a whole other model and associate it with 
+our user model with a one-to-one association.

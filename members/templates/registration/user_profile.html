@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<h1>User Profile...</h1>
+
+<!--{{ page_user }}-->
+<!--We're getting all our info from {page user} which gets the id of whoever has the account the post originated from-->
+<br/><br/>
+<div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-2">
+        {% if page_user.profile_pic %}
+          <img src="{{ page_user.profile_pic.url }}" class="img-fluid rounded-start" alt="writer image">
+        {% else %}
+          <img src="{% static 'default_img/default.png' %}" class="img-fluid rounded-start" alt="writer image">
+        {% endif %}
+       </div>
+      <div class="col-md-10">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ page_user.user.first_name }} 
+            {{ page_user.user.last_name }}
+          </h5>
+          <p class="small text-muted">
+
+            {% if page_user.website_url %}
+              | <a href="{{ page_user.website_url }}">Website</a> 
+            {% endif %}
+            {% if page_user.facebook_url %}  
+              | <a href="{{ page_user.facebook_url }}">Facebook</a> 
+            {% endif %}
+            {% if page_user.twitter_url %}
+              | <a href="{{ page_user.twitter_url }}">Twitter</a>  
+            {% endif %}
+            {% if page_user.instagram_url %}
+              | <a href="{{ page_user.instagram_url }}">Instagram</a> 
+            {% endif %}
+            {% if page_user.pinterest_url %}
+              | <a href="{{ page_user.pinterest_url }}">Pinterest</a>
+            {% endif %}
+            <!--We use the if statements to ensure our code does not break if we don't have any 
+            of the accounts are not filled-->
+          </p>
+          <p class="card-text">{{ page_user.bio }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Create A New Profile{% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1>Create Profile Page...</h1>
+    <br/><br/>
+    <div class="form-group">
+        <form method="POST" enctype="multipart/form-data"><!--The enctype is to make our forms recognize image encryption after installing Pillow, then headovet to your form for this page and make some changes-->
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-secondary">Create Profile Page</button>
+        </form>
+    </div>
+
+    <!--//<script>
+        //var name = "{{ user.id }}";
+        //document.getElementById("writer").value = name;
+    //</script>-->
+
+    <!--Instead of using the Javascript function above to get the current
+    user, we will attempt to do exactly this with CBV, learn-->
+
+{% else %}
+<strong>Kindly Login to continue</strong>
+{% endif %}
+
+
+{% endblock %}
