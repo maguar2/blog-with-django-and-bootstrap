@@ -27,7 +27,6 @@ def LikeView(request, pk):
     return HttpResponseRedirect(reverse('article-detail', args=[str(pk)]))
  
 
-
 class HomeView(ListView):
     model = Post
     template_name = 'home.html'
