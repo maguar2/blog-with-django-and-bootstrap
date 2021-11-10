@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
+{% load cms_tags %}
 
 {% block content %}
 
 <h1>Posts</h1>
 <div class="container px-2">
-    <div class="row row-cols-3 gx-2">
+    <div class="row row-cols-3 gx-1">
+        <!--Align the column obj to three-->
         {% for post in object_list %}
-            <div class="col-md-4 text-white mb-3">
-                <div class="card" style="width: 18rem;">
+            <div class="col-sm-6 col-lg-3 text-black mb-3">
+                <div class="card" style="width: 16rem;">
                     {% if post.header_image %}
                         <img src="{{ post.header_image.url }}" class="card-img-top img-fluid" height=200 width=200 />
                     {% endif %}
